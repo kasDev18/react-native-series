@@ -13,11 +13,23 @@ export default function MenuScreen() {
 
   const Container = Platform.OS === "web" ? ScrollView : SafeAreaView;
 
+  const separatorComp = <View style={styles.separator}/>;
+
+      // const headerComp = <Text>Top of List</Text>
+      const footerComp = <Text style={{ color: theme.text }}>End of Menu</Text>
+
   return (
     <Container>
       <FlatList
         data={MENU_ITEMS}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator = {false}
+        contentContainerStyle={styles.contentContainer}
+        ItemSeparatorComponent={separatorComp}
+        // ListHeaderComponent={headerComp}
+        ListFooterComponent={footerComp}
+        ListFooterComponentStyle={styles.footerComp}
+        ListEmptyComponent={<Text>Menu is empty</Text>}
         renderItem={({item}) => (
           <View style={styles.row}>
             <View style={styles.menuTextRow}>
@@ -26,7 +38,7 @@ export default function MenuScreen() {
               </Text>
               <Text style={styles.menuItemText}>{item.description}</Text>
             </View>
-            <Image source={MENU_IMAGES[item.id - 1]} style={styles.menuImage} />
+            <Image source={MENU_IMAGES[item.id - 1]} style={styles.menuImage}/>
           </View>
         )}
       ></FlatList>
