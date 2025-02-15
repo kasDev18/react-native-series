@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
+import { StyleSheet, Text, View, TextInput, Pressable, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { data } from "@/data/todos";
 
@@ -10,11 +11,14 @@ export default function Index() {
 
   const addTodo = () => {
     if (text.trim()) {
-      const newID = todos.length > 0 ? todos[todos.length - 1].id + 1 : 1;
+      const newID = todos.length > 0 ? todos[todos.length - 1].id + todos.length : 1;
       setTodos([{ id: newID, title: text, completed: false }, ...todos]);
       setText("");
     }
   };
+
+  console.log(todos);
+  
 
   const toggleTodo = (id) => {
     setTodos(
@@ -27,6 +31,20 @@ export default function Index() {
   const removeTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
+
+  const renderItem = ({ item }) => (
+    <View style={styles.todoItem}>
+      <Text
+        style={[styles.todoText, item.completed && styles.completedText]}
+        onPress={() => toggleTodo(item.id)}
+      >
+        {item.title}
+      </Text>
+      <Pressable onPress={() => removeTodo(item.id)}>
+        <MaterialCommunityIcons name="delete-circle" size={36} color="red" selectable={undefined} />
+      </Pressable>
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -42,6 +60,13 @@ export default function Index() {
           <Text style={styles.addButtonText}>Add</Text>
         </Pressable>
       </View>
+
+      <FlatList
+        data={todos}
+        renderItem={renderItem}
+        keyExtractor={todo => todo.id}  
+        contentContainerStyle={{ flexGrow: 1 }}
+      ></FlatList>
     </SafeAreaView>
   );
 }
