@@ -1,0 +1,7 @@
+Icons: 
+    import - @expo/vector-icons
+    npm package - @expo/vector-icons
+
+Animation:
+    source: https://docs.swmansion.com/react-native-reanimated/
+    npm package: react-native-reanimated
